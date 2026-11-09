@@ -1,0 +1,89 @@
+$ python -m helpdesk.tools
+find_instructions('Wi-Fi') ->
+{
+  "found": true,
+  "topic": "wifi",
+  "instruction_id": "GUIDE-WIFI",
+  "title": "Connect to the practice campus network",
+  "steps": [
+    "Check that Wi-Fi is enabled and airplane mode is off.",
+    "Select the fictional Campus-Demo network.",
+    "If connection fails, forget the saved network and try connecting again.",
+    "If the problem remains, check the service status before preparing a ticket."
+  ],
+  "source": "data/helpdesk.json"
+}
+
+check_service_status('wifi', 'normal') ->
+{
+  "service": "wifi",
+  "status": "operational",
+  "known_service": true,
+  "message": "The demo Wi-Fi service has no reported outage.",
+  "status_profile": "normal",
+  "source": "data/service_status.json"
+}
+
+check_service_status('wifi', 'wifi_outage') ->
+{
+  "service": "wifi",
+  "status": "outage",
+  "known_service": true,
+  "message": "The demo Wi-Fi service is unavailable across campus. The fixture gives no repair time.",
+  "status_profile": "wifi_outage",
+  "source": "data/service_status.json"
+}
+
+check_service_status('wifi', 'status_unavailable') ->
+{
+  "service": "wifi",
+  "status": "unknown",
+  "known_service": true,
+  "message": "The demo Wi-Fi status source is unavailable.",
+  "status_profile": "status_unavailable",
+  "source": "data/service_status.json"
+}
+
+check_service_status('password', 'recovery_outage') ->
+{
+  "service": "account_recovery",
+  "status": "outage",
+  "known_service": true,
+  "message": "The demo account-recovery service is unavailable. The fixture gives no repair time.",
+  "status_profile": "recovery_outage",
+  "source": "data/service_status.json"
+}
+
+prepare_ticket(...) with no steps ->
+{
+  "created": false,
+  "missing": [
+    "steps already tried"
+  ],
+  "advice": "Ask the user; do not invent missing details."
+}
+
+prepare_ticket(...) complete ->
+{
+  "created": true,
+  "ticket_id": "DRAFT-20261109-111736-456E",
+  "file": "<temporary folder>",
+  "ticket": {
+    "ticket_id": "DRAFT-20261109-111736-456E",
+    "status": "draft",
+    "user_id": "demo-user-a",
+    "thread_id": "direct",
+    "category": "wifi",
+    "summary": "Campus-Demo will not connect.",
+    "steps_tried": [
+      "Enabled Wi-Fi",
+      "Forgot the saved network and reconnected"
+    ],
+    "service_status": "operational",
+    "status_profile": "normal",
+    "reference_ids": [
+      "GUIDE-WIFI"
+    ]
+  },
+  "note": "Local draft only. Nothing was sent to a helpdesk."
+}
