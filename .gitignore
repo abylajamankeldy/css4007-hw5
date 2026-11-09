@@ -11,3 +11,6 @@ __pycache__/
 *.sqlite-*
 *.sqlite3-*
 local-storage/
+
+# Offline dry runs with the fake model (not results)
+outputs/fake-model/
