@@ -1,7 +1,7 @@
 # HW5 — My LangGraph helpdesk
 
 - **Name:** _Amankeldy Abylaj_
-- **Repository:** _(link to my public fork)_
+- **Repository:** _https://github.com/abylajamankeldy/css4007-hw5.git_
 - **Model and provider used for Parts 2–3:** _(fill in after the real run, e.g. `openai/gpt-oss-120b` via Groq, OpenAI-compatible endpoint)_
 - **Python:** 3.13. Package versions: `requirements.txt`.
 
