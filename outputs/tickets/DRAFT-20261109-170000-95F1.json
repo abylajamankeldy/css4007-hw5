@@ -1,0 +1,16 @@
+{
+  "ticket_id": "DRAFT-20261109-170000-95F1",
+  "status": "draft",
+  "user_id": "demo-user-a",
+  "thread_id": "restart-a",
+  "category": "wifi",
+  "summary": "Wi-Fi fails to connect despite enabling and reconnecting",
+  "steps_tried": [
+    "I enabled it and tried reconnecting"
+  ],
+  "service_status": "operational",
+  "status_profile": "normal",
+  "reference_ids": [
+    "GUIDE-WIFI"
+  ]
+}
