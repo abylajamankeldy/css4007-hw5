@@ -1,7 +1,11 @@
-# Starter dependencies. Install in a virtual environment.
-# After testing your implementation, replace these with the exact versions you used.
-langgraph
-langchain-openai
-langgraph-checkpoint-sqlite
-python-dotenv
-pytest
+# Exact versions used and tested with Python 3.13 (see README).
+# Full list of every installed package, including indirect ones: requirements-lock.txt
+langgraph==1.2.20
+langgraph-checkpoint==4.3.1
+langgraph-checkpoint-sqlite==3.1.3
+langchain-core==1.7.6
+langchain-openai==1.7.4
+openai==3.46.0
+pydantic==2.14.3
+python-dotenv==1.2.4
+pytest==9.2.0

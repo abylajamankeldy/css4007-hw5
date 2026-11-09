@@ -1,0 +1,29 @@
+name: tests
+
+# Runs on every push and pull request. Uses NO API key: the agent tests use the
+# clearly labelled fake model in helpdesk/fake_model.py. The real-model
+# demonstration (python -m helpdesk.run_scenarios) is run by hand, not here.
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.13"]
+    runs-on: ${{ matrix.os }}
+    env:
+      LANGSMITH_TRACING: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install pinned dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run tests (fake model, temporary storage)
+        run: python -m pytest -v
