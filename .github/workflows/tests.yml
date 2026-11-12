@@ -1,29 +1,30 @@
-name: tests
+name: tests   # имя проверки на вкладке Actions
 
 # Runs on every push and pull request. Uses NO API key: the agent tests use the
 # clearly labelled fake model in helpdesk/fake_model.py. The real-model
 # demonstration (python -m helpdesk.run_scenarios) is run by hand, not here.
+# Когда запускать: на каждый git push и на каждый pull request.
 on:
   push:
   pull_request:
 
 jobs:
-  pytest:
+  pytest:                       # одна задача с именем pytest
     strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+      fail-fast: false          # если упало на одной ОС, всё равно доиграть на другой
+      matrix:                   # матрица = запустить задачу для каждой комбинации
+        os: [ubuntu-latest, windows-latest]   # Linux и Windows (у тебя Windows)
         python-version: ["3.13"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}   # машина GitHub с выбранной ОС
     env:
-      LANGSMITH_TRACING: "false"
+      LANGSMITH_TRACING: "false"   # не отправлять трассы во внешний сервис
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v4          # скачать код репозитория на машину
+      - uses: actions/setup-python@v5      # поставить Python
         with:
           python-version: ${{ matrix.python-version }}
-          cache: pip
+          cache: pip                       # кэш пакетов: следующие запуски быстрее
       - name: Install pinned dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install -r requirements.txt   # точные версии из requirements.txt
       - name: Run tests (fake model, temporary storage)
-        run: python -m pytest -v
+        run: python -m pytest -v           # 30 тестов; ключ не нужен (фальшивая модель)

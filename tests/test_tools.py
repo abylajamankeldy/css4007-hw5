@@ -3,6 +3,7 @@ import json
 
 import pytest
 
+# Инструменты импортируются как обычные функции: ни графа, ни модели.
 from helpdesk.tools import check_service_status, find_instructions, prepare_ticket
 
 
@@ -14,10 +15,11 @@ def test_find_instructions_wifi_and_password():
 
 def test_find_instructions_unknown_topic():
     # Catches: inventing instructions for a topic the guide does not cover.
-    out = find_instructions("printer")
+    out = find_instructions("printer")                 # такой темы в справочнике нет
     assert out["found"] is False and "steps" not in out
 
 
+# Один тест на три снимка статуса -> 3 случая.
 @pytest.mark.parametrize("profile,expected", [
     ("normal", "operational"), ("wifi_outage", "outage"), ("status_unavailable", "unknown"),
 ])
@@ -32,12 +34,14 @@ def test_password_topic_maps_to_account_recovery():
     assert out["service"] == "account_recovery" and out["status"] == "outage"
 
 
+# tmp_path: временная папка, которую pytest создаёт для теста и потом удаляет.
 def test_prepare_ticket_writes_template_fields(tmp_path):
     # Catches: missing template fields, ticket not saved, invented status.
     out = prepare_ticket("wifi", "Campus-Demo will not connect", ["Enabled Wi-Fi"],
                          user_id="demo-user-a", thread_id="t1", status_profile="normal",
                          service_status="operational", ticket_dir=tmp_path)
     assert out["created"]
+    # Читаем сохранённый файл и проверяем: ровно поля шаблона, статус draft, шаги как переданы.
     saved = json.loads((tmp_path / f"{out['ticket_id']}.json").read_text(encoding="utf-8"))
     assert set(saved) == {"ticket_id", "status", "user_id", "thread_id", "category", "summary",
                           "steps_tried", "service_status", "status_profile", "reference_ids"}
@@ -50,6 +54,7 @@ def test_prepare_ticket_refuses_missing_details(tmp_path):
     out = prepare_ticket("wifi", "", [], user_id="u", thread_id="t",
                          status_profile="normal", ticket_dir=tmp_path)
     assert out["created"] is False
+    # not list(tmp_path.iterdir()) = папка пустая, файл НЕ создан
     assert "steps already tried" in out["missing"] and not list(tmp_path.iterdir())
 
 
